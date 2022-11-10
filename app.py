@@ -6,9 +6,13 @@ from CONSTANTS import StatusCode
 from payload_verification import verifier
 from grafana_dashboaring import grafana_utility
 from tippers_logs import logger
+
+import psycopg2
 app = Flask(__name__, instance_relative_config=True)
 
 CORS(app)
+
+conn = psycopg2.connect(host = "caredex-db.ics.uci.edu", database = "tippersdb_uci", user = "postgres", password = "cAredEXpOstgrespW")
 
 @app.route('/create_alert', methods = ['POST'])
 def create_alert():
@@ -16,3 +20,5 @@ def create_alert():
     code, err = verifier.verify_payload(payload,['query','frequency','recurrence'])
     if code != StatusCode.OK:
         logger.tipper_logs(err)
+    
+    
