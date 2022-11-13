@@ -15,7 +15,7 @@ CORS(app)
 
 
 pgh = postgres_handler.PostGresHandler()
-
+gfu = grafana_utility.GrafanaHandler()
 
 @app.route('/create_alert', methods = ['POST'])
 def create_alert():
@@ -28,6 +28,8 @@ def create_alert():
     if(code!= StatusCode.OK):
         return error_logic.handle_error_logic(code,err)
     
+    code, err = gfu.add_panel(payload['query_description'], payload['query'])
+
 
 
 if __name__ == "__main__":
